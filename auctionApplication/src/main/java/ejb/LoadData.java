@@ -8,6 +8,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 import entities.Account;
@@ -15,21 +18,22 @@ import entities.User;
 /*
  * Så langt lager den bare brukere og persister de
  */
-//@Singleton
+@Singleton
 @Startup
 public class LoadData {
 	
-	@PersistenceContext(unitName = "auctionApplication")
-	private EntityManager em;
-	
 	@PostConstruct
-	public void createData() {
+	public void initiate() {
 		int numberOfAccounts = 10;
 		ArrayList<Account> accounts = generateAccounts(numberOfAccounts);
-		assert(accounts.size()==numberOfAccounts);
-		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("auctionApplication");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
 		accounts.forEach(s->em.persist(s));
-		em.flush();
+		tx.commit();
+		em.close();
+		emf.close();
 	}
 	
 	private ArrayList<Account> generateAccounts(int n) {
