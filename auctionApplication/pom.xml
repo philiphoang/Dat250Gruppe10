@@ -28,13 +28,12 @@
 		<version>3.8.1</version>
 		<scope>test</scope>
 	</dependency>
-	<!-- Derby dependency for the database -->
+	<!-- PostgreSQL dependency for the database -->
 	<dependency>
-		<groupId>org.apache.derby</groupId>
-		<artifactId>derby</artifactId>
-		<version>10.12.1.1</version>
-		<scope>test</scope>
-	</dependency>
+	<groupId>postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+	<version>9.1-901-1.jdbc4</version>
+</dependency>
 	<!-- Contains all Java EE 7 APIs (from EJB, JTA, JCA over CDI to JPA) -->
 	<dependency>
 		<groupId>javax</groupId>
