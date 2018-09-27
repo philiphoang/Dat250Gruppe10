@@ -1,5 +1,5 @@
-/*
 import java.net.URI;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import entities.Bid;
+import entities.Product;
 import entities.User;
 
 import javax.ws.rs.Path;
@@ -29,30 +30,14 @@ public class RestService {
 	private EntityManager em;
 	
 	@GET
-	@Path("/{id}/get")
-	public Product getProduct(@PathParam("id") int id) {
-		return product.get(id);
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Response getProducts() {
+		TypedQuery<Product> query = em.createNamedQuery("SELECT b FROM Product b", Product.class);
+		
+		List<Product> products = query.getResultList();
+		return Response.ok(products).build();
 	}
 	
-	@GET
-	@Path("auctions/{id}/bids")
-	public Auction getBid(@PathParam("id") int 
-	
-	@GET
-	@Produces(MediaType.APPLICATION_XML)
-	public User getUser() {
-		TypedQuery<User> query = em.createNamedQuery(User.FIND_ALL, User.class);
-		User user = new User(query.getResultList());
-		return user;
-	}
-	
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public Response createBid(Bid bid) {
-		em.persist(bid);
-		URI bidUri = uriInfo.getAbsolutePathBuilder().path(bid.getId().toString()).build();
-		return Response.created(bidUri).build();
-	}
+
 	
 }
-*/
