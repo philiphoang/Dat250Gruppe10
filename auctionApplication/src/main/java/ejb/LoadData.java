@@ -24,7 +24,7 @@ public class LoadData {
 	
 	@PostConstruct
 	public void initiate() {
-		int numberOfAccounts = 10;
+		int numberOfAccounts = 0; //number of new accounts added on startup
 		ArrayList<Account> accounts = generateAccounts(numberOfAccounts);
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("auctionApplication");
 		EntityManager em = emf.createEntityManager();
