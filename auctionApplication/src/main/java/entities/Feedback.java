@@ -17,9 +17,9 @@ public class Feedback {
 	  @JoinColumn(name = "accountId")
 	  private Account account;
 	  
-	  @OneToOne(mappedBy = "feedback")
+	  /*@OneToOne(mappedBy = "feedback")
 	  @JoinColumn(name = "product")
-	  private Product product;
+	  private Product product;*/
 
 	  /**
 	   * 
@@ -29,7 +29,7 @@ public class Feedback {
 	   */
 	  public Feedback(Account account, Product product, String feedback) {
 		  this.account=account;
-		  this.product=product;
+		 // this.product=product;
 		  this.feedback=feedback;
 	  }
 

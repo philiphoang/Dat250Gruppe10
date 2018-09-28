@@ -10,58 +10,60 @@ public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
-
-  private String productName;
-  private String picture; //Changes to type Image
-  private String features; //Description
-  private Float productRating;
+  private int productId;
   
-  @OneToOne
-  @JoinColumn(name = "feedback_fk")
-  private Feedback feedback;
-
-  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name="productName")
+  private String productName;
+  @Column(name="description")
+  private String description; //Description
+  @Column(name="productRating")
+  private double productRating;
+  
+  @ManyToOne
+  @JoinTable(name="products", joinColumns = @JoinColumn(name="productId"), inverseJoinColumns = @JoinColumn(name="accountId"))
+  private Account account;
+  
+  
+  /*@Temporal(TemporalType.TIMESTAMP)
   private Date endTime; //java.util.Date || java.util.Calendar
 
-  private Boolean published;
+  private Boolean published;*/
 
   public Product() {}
+  
+  public Product(String name, Account account, String description, double rating) {
+	  this.productName=name;
+	  setAccount(account);
+	  this.description=description;
+	  this.productRating=rating;
+  }
+  
 
   public String getProductName() {
     return productName;
   }
 
-  public void setProductName() {
-    this.productName = productName;
+  public void setProductName(String name) {
+    this.productName = name;
   }
 
-  //Must change to type Image
-  public String getPicture() {
-    return picture;
+  public String getDescription() {
+    return description;
   }
 
-  public void setPicture(String picture) {
-    this.picture = picture;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
-  public String getFeatures() {
-    return features;
-  }
-
-  public void setFeatures(String features) {
-    this.features = features;
-  }
-
-  private Float getProductRating() {
+  private double getProductRating() {
     return productRating;
   }
 
-  public void setProductRating(Float productRating) {
+  public void setProductRating(double productRating) {
     this.productRating = productRating;
   }
   
-  public Boolean isPublished() {
+  /*public Boolean isPublished() {
 	  return published;
   }
   
@@ -75,6 +77,19 @@ public class Product {
   
   public Feedback getFeedback() {
 	  return feedback;
-  }
+  }*/
+
+
+public void setAccount(Account account) {
+	//linking them is the problem
+	this.account=account;
+	if(!account.getProducts().contains(this))
+		account.addProduct(this);
+}
+
+
+public Account getAccount() {
+	return account;
+}
   
 }

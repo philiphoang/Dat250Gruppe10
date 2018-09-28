@@ -14,6 +14,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 import entities.Account;
+import entities.Product;
 import entities.User;
 /*
  * Så langt lager den bare brukere og persister de
@@ -22,19 +23,29 @@ import entities.User;
 @Startup
 public class LoadData {
 	
+	/*@PersistenceContext(name="auctionApplication")
+	EntityManager em;*/
+	
 	@PostConstruct
 	public void initiate() {
-		int numberOfAccounts = 90; //number of new accounts added on startup
-		ArrayList<Account> accounts = generateAccounts(numberOfAccounts);
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("auctionApplication");
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
+
+		int numberOfAccounts = 1; //number of new accounts added on startup		
+		ArrayList<Account> accounts = generateAccounts(numberOfAccounts);
+		Product p = new Product();
+		p.setProductName("Sko");
+		p.setDescription("Blaa sko");
+		p.setProductRating(0);
+		//p.setAccount(accounts.get(0));
 		tx.begin();
+		em.persist(p);
 		accounts.forEach(s->em.persist(s));
 		tx.commit();
 		em.close();
 		emf.close();
-	}
+		}
 	
 	private ArrayList<Account> generateAccounts(int n) {
 		ArrayList<String> maleNames = new ArrayList<>();

@@ -1,5 +1,6 @@
 package entities;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -33,6 +34,9 @@ public class Account {
   @JoinColumn(name="feedback")
   @OneToMany(mappedBy = "account")
   private ArrayList<Feedback> feedbacks;
+  
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "account", fetch = FetchType.EAGER)
+  private List<Product> products;
 
   //Assume that address is its own table
   //private Address address;
@@ -48,7 +52,7 @@ public class Account {
     this.phone = phone;
     this.rating = rating;
     this.email = email;
-    
+    products = new ArrayList<>();
     
     //this.address = address;
     //this.city = city;
@@ -118,6 +122,21 @@ public class Account {
 	
 	public ArrayList<Feedback> getFeedbacks(){
 		return feedbacks;
+	}
+	
+	public void setProducts(ArrayList<Product> products) {
+		this.products=products;
+		products.forEach(f->f.setAccount(this));
+	}
+	public void addProduct(Product product) {
+		products.add(product);
+		if(!product.getAccount().equals(this))
+			product.setAccount(this);
+		
+	}
+	
+	public List<Product> getProducts(){
+		return products;
 	}
 	
 	public void setFeedbacks(ArrayList<Feedback> feedbacks) {
