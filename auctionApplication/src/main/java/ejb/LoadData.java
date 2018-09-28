@@ -32,7 +32,7 @@ public class LoadData {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 
-		int numberOfAccounts = 1; //number of new accounts added on startup		
+		int numberOfAccounts = 0; //number of new accounts added on startup		
 		ArrayList<Account> accounts = generateAccounts(numberOfAccounts);
 		Product p = new Product();
 		p.setProductName("Sko");
@@ -40,7 +40,7 @@ public class LoadData {
 		p.setProductRating(0);
 		//p.setAccount(accounts.get(0));
 		tx.begin();
-		em.persist(p);
+		//em.persist(p);
 		accounts.forEach(s->em.persist(s));
 		tx.commit();
 		em.close();
