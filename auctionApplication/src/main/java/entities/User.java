@@ -6,7 +6,7 @@ import javax.validation.constraints.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@XmlRootElement
+//@XmlRootElement
 @NamedQueries({
 	@NamedQuery(name = "findUser", query = "SELECT b From User b")
 })
