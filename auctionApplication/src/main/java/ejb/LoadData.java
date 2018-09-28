@@ -14,6 +14,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 import entities.Account;
+import entities.Bid;
 import entities.Product;
 import entities.User;
 /*
@@ -31,22 +32,36 @@ public class LoadData {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("auctionApplication");
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
-
-		int numberOfAccounts = 0; //number of new accounts added on startup		
+		
+		int numberOfProducts  = 1;
+		int numberOfAccounts = 1; //number of new accounts added on startup
+		int numberOfBids = 1;
 		ArrayList<Account> accounts = generateAccounts(numberOfAccounts);
-		Product p = new Product();
-		p.setProductName("Sko");
-		p.setDescription("Blaa sko");
-		p.setProductRating(0);
-		//p.setAccount(accounts.get(0));
+		ArrayList<Product> products = generateProducts(numberOfProducts);
+		//ArrayList<Bid> bids = generateBids(numberOfBids, products);
+		//Bid b = new Bid();
 		tx.begin();
-		//em.persist(p);
+		//em.persist(b);
+		products.forEach(p->em.persist(p));
+		//bids.forEach(b->em.persist(b));
 		accounts.forEach(s->em.persist(s));
 		tx.commit();
 		em.close();
 		emf.close();
 		}
 	
+	private ArrayList<Bid> generateBids(int numberOfBids, ArrayList<Product> products) {
+		ArrayList<Bid> bids = new ArrayList<>();
+		Random rand=new Random();
+		for(int i=0;i<numberOfBids;i++) {
+			Bid b = new Bid();
+			b.setBidAmount(rand.nextInt(1000000));
+			b.setProduct(products.get(rand.nextInt(products.size())));
+			bids.add(b);
+		}
+		return bids;
+	}
+
 	private ArrayList<Account> generateAccounts(int n) {
 		ArrayList<String> maleNames = new ArrayList<>();
 		Collections.addAll(maleNames, "Hans","Joakim","Mikal","Phillip","Magnus","Truls","Rolf",
@@ -99,6 +114,33 @@ public class LoadData {
 				i--; //make new random user
 		}
 		return accounts;
+	}
+	
+	private ArrayList<Product> generateProducts(int n){
+		ArrayList<String> productType = new ArrayList<>();
+		Collections.addAll(productType, "Shoe","Car","Table","Camera","Laptop","Art","Statue",
+				"Yacht", "House", "Hat", "Football", "Sweater","Bag","Banana", "Watch");
+		ArrayList<String> adjective = new ArrayList<>();
+		Collections.addAll(adjective, "Blue","Black","White","Big","Small", "Antique","Valuable",
+				"Nice","Great", "Broken","Notorious","Tall","Special","Shiny");
+		ArrayList<String> adverb =  new ArrayList<>();
+		Collections.addAll(adverb, "very", "a little", "somewhat", "maybe a bit", "not so",
+				"kind of","notoriously", "very much", "especially", "definitely");
+		ArrayList<Product> products = new ArrayList<>();
+		for(int i =0;i<n;i++) {
+			Random rand=new Random();
+			String name = adjective.get(rand.nextInt(adjective.size()))+" "+
+					productType.get(rand.nextInt(productType.size()));
+			String description = "This "+name+" is " + 
+					adverb.get(rand.nextInt(adverb.size()))+" "+
+					adjective.get(rand.nextInt(adjective.size()));
+			Product p = new Product();
+			p.setProductName(name);
+			p.setDescription(description);
+			p.setProductRating(rand.nextDouble()*5);
+			products.add(p);
+		}
+		return products;
 	}
 	
 }

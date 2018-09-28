@@ -38,6 +38,12 @@ public class Product {
 	  this.productRating=rating;
   }
   
+  public Product(String name, String description, double rating) {
+	  this.productName=name;
+	  this.description=description;
+	  this.productRating=rating;
+  }
+  
 
   public String getProductName() {
     return productName;
