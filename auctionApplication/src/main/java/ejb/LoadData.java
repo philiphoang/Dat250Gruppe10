@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 import entities.Account;
@@ -26,18 +28,10 @@ public class LoadData {
 	public void createData() {
 		int numberOfAccounts = 10;
 		ArrayList<Account> accounts = generateAccounts(numberOfAccounts);
-		assert(accounts.size()==numberOfAccounts);
-		
+
 		accounts.forEach(s->em.persist(s));
 		em.flush();
-
 		
-//		Account acc1 = new Account("Philip", "87654321", 5, "philip@hvl.no");
-//		
-//		em.persist(acc1);
-//		
-//		em.flush();
-//		
 		
 	}
 	
@@ -94,5 +88,6 @@ public class LoadData {
 		}
 		return accounts;
 	}
+	
 	
 }

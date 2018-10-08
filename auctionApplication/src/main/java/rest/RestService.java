@@ -37,7 +37,6 @@ public class RestService {
 	private UriInfo uriInfo;
 	@PersistenceContext(unitName = "auctionApplication")
 	EntityManager em;
-	//EntityManagerFactory emf = Persistence.createEntityManagerFactory("auctionApplication");
 	
 	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
