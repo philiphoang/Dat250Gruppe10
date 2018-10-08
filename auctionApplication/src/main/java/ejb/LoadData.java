@@ -13,6 +13,8 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 import entities.Account;
+import entities.Bid;
+import entities.Product;
 import entities.ProductCatalog;
 /*
  * Så langt lager den bare brukere og persister de
@@ -35,6 +37,18 @@ public class LoadData {
 		
 	}
 	
+	private ArrayList<Bid> generateBids(int numberOfBids, ArrayList<Product> products) {
+		ArrayList<Bid> bids = new ArrayList<>();
+		Random rand=new Random();
+		for(int i=0;i<numberOfBids;i++) {
+			Bid b = new Bid();
+			b.setBidAmount(rand.nextInt(1000000));
+			b.setProduct(products.get(rand.nextInt(products.size())));
+			bids.add(b);
+		}
+		return bids;
+	}
+
 	private ArrayList<Account> generateAccounts(int n) {
 		ArrayList<String> maleNames = new ArrayList<>();
 		Collections.addAll(maleNames, "Hans","Joakim","Mikal","Phillip","Magnus","Truls","Rolf",
@@ -89,5 +103,30 @@ public class LoadData {
 		return accounts;
 	}
 	
-	
+	private ArrayList<Product> generateProducts(int n){
+		ArrayList<String> productType = new ArrayList<>();
+		Collections.addAll(productType, "Shoe","Car","Table","Camera","Laptop","Art","Statue",
+				"Yacht", "House", "Hat", "Football", "Sweater","Bag","Banana", "Watch");
+		ArrayList<String> adjective = new ArrayList<>();
+		Collections.addAll(adjective, "Blue","Black","White","Big","Small", "Antique","Valuable",
+				"Nice","Great", "Broken","Notorious","Tall","Special","Shiny");
+		ArrayList<String> adverb =  new ArrayList<>();
+		Collections.addAll(adverb, "very", "a little", "somewhat", "maybe a bit", "not so",
+				"kind of","notoriously", "very much", "especially", "definitely");
+		ArrayList<Product> products = new ArrayList<>();
+		for(int i =0;i<n;i++) {
+			Random rand=new Random();
+			String name = adjective.get(rand.nextInt(adjective.size()))+" "+
+					productType.get(rand.nextInt(productType.size()));
+			String description = "This "+name+" is " + 
+					adverb.get(rand.nextInt(adverb.size()))+" "+
+					adjective.get(rand.nextInt(adjective.size()));
+			Product p = new Product();
+			p.setProductName(name);
+			p.setDescription(description);
+			p.setProductRating(rand.nextDouble()*5);
+			products.add(p);
+		}
+		return products;
+	}	
 }
