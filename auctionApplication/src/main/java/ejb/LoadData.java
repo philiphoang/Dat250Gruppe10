@@ -28,22 +28,27 @@ public class LoadData {
 	
 	@PostConstruct
 	public void createData() {
-		int numberOfAccounts = 10;
+		int numberOfAccounts = 100;
+		int numberOfProducts = 60;
+		int numberOfBids = 35;
 		ArrayList<Account> accounts = generateAccounts(numberOfAccounts);
-
-		accounts.forEach(s->em.persist(s));
+		ArrayList<Product> products = generateProducts(numberOfProducts);
+		ArrayList<Bid> bids = generateBids(numberOfBids,products,accounts);
+		
+		accounts.forEach(a->em.persist(a));
+		products.forEach(p->em.persist(p));
+		bids.forEach(b->em.persist(b));
 		em.flush();
-		
-		
 	}
 	
-	private ArrayList<Bid> generateBids(int numberOfBids, ArrayList<Product> products) {
+	private ArrayList<Bid> generateBids(int numberOfBids, ArrayList<Product> products, ArrayList<Account> accounts) {
 		ArrayList<Bid> bids = new ArrayList<>();
 		Random rand=new Random();
 		for(int i=0;i<numberOfBids;i++) {
 			Bid b = new Bid();
 			b.setBidAmount(rand.nextInt(1000000));
 			b.setProduct(products.get(rand.nextInt(products.size())));
+			b.setAccount(accounts.get(rand.nextInt(accounts.size())));
 			bids.add(b);
 		}
 		return bids;
@@ -123,8 +128,8 @@ public class LoadData {
 					adjective.get(rand.nextInt(adjective.size()));
 			Product p = new Product();
 			p.setProductName(name);
-			p.setDescription(description);
-			p.setProductRating(rand.nextDouble()*5);
+			p.setFeatures(description);
+			p.setPublish(rand.nextBoolean());
 			products.add(p);
 		}
 		return products;

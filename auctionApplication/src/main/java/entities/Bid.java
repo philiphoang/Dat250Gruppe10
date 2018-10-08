@@ -18,11 +18,11 @@ public class Bid {
 	
 	private int bidAmount; 
 	
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne()
 //	@XmlTransient
 	private Product product;
 	
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne()
 	private Account account;
 	
 
